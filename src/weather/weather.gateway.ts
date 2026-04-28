@@ -3,7 +3,7 @@ import { Server, WebSocket } from 'ws';
 import { WeatherService } from './weather.service';
 import { Logger } from '@nestjs/common';
 
-@WebSocketGateway(8080, { cors: true })
+@WebSocketGateway({ cors: true })
 export class WeatherGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
