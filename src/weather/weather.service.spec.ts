@@ -44,7 +44,7 @@ describe('WeatherService', () => {
 
     const result = await service.getWeatherData();
     expect(result).toBeDefined();
-    expect(result.current.temperature).toBe(20);
-    expect(result.forecast.length).toBeGreaterThan(0);
+    expect(result!.current.temperature).toBe(20);
+    expect(result!.forecast.length).toBeGreaterThan(0);
   });
 });

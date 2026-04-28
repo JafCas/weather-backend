@@ -1,5 +1,5 @@
-# Stage 1: Build
-FROM node:20-alpine AS builder
+# Stage 1: Build the application
+FROM node:20 AS builder
 
 WORKDIR /app
 
@@ -13,20 +13,22 @@ COPY . .
 # Build the NestJS application
 RUN npm run build
 
-# Stage 2: Run
-FROM node:20-alpine
+# Stage 2: Run the application
+FROM node:20-slim
 
 WORKDIR /app
 
-# Copy only the necessary files from the builder stage
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/dist ./dist
-
-# Install production dependencies only
+# Copy package files and install only production dependencies
+COPY package*.json ./
 RUN npm install --only=production
 
-# Expose the port (Cloud Run will set the PORT env var)
+# Copy the compiled code from the builder stage
+COPY --from=builder /app/dist ./dist
+
+# Set the environment variable for the port
+ENV PORT=8080
 EXPOSE 8080
 
-# Start the application
+# Start the application using the production script
+# Note: Ensure package.json has "start:prod": "node dist/main"
 CMD ["npm", "run", "start:prod"]

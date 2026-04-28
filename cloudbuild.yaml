@@ -1,11 +1,11 @@
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/weather-backend/service-image:$SHORT_SHA', '.']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/weather-backend/service-image:latest', '.']
 
   # Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/weather-backend/service-image:$SHORT_SHA']
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/weather-backend/service-image:latest']
 
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -15,7 +15,7 @@ steps:
       - 'deploy'
       - 'weather-service'
       - '--image'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/weather-backend/service-image:$SHORT_SHA'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/weather-backend/service-image:latest'
       - '--region'
       - 'us-central1'
       - '--platform'
@@ -25,4 +25,4 @@ steps:
       - '3600' # 1 hour timeout for WebSockets
 
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/weather-backend/service-image:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/weather-backend/service-image:latest'
