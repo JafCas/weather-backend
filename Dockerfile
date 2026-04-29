@@ -11,7 +11,7 @@ RUN npm install
 COPY . .
 
 # Build the NestJS application
-RUN npm run build
+RUN npm run build && ls -la dist
 
 # Stage 2: Run the application
 FROM node:20-slim
@@ -29,6 +29,5 @@ COPY --from=builder /app/dist ./dist
 ENV PORT=8080
 EXPOSE 8080
 
-# Start the application using the production script
-# Note: Ensure package.json has "start:prod": "node dist/main"
-CMD ["npm", "run", "start:prod"]
+# Start the application
+CMD ["node", "dist/src/main.js"]
